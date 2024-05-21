@@ -17,6 +17,6 @@ public class BoardController {
 
     @PostMapping("add")
     public void add(@RequestBody Board board) {
-        System.out.println("board = " + board);
+        service.add(board);
     }
 }
