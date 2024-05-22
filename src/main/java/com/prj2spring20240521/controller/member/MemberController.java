@@ -56,4 +56,9 @@ public class MemberController {
             return ResponseEntity.ok().body(member);
         }
     }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Integer id) {
+        service.remove(id);
+    }
 }
