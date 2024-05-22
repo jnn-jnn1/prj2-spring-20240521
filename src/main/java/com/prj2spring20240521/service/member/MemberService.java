@@ -51,4 +51,8 @@ public class MemberService {
     public List<Member> getAll() {
         return mapper.selectAll();
     }
+
+    public Member getByID(Integer id) {
+        return mapper.selectById(id);
+    }
 }

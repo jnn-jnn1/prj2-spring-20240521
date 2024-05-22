@@ -46,4 +46,14 @@ public class MemberController {
     public List<Member> list() {
         return service.getAll();
     }
+
+    @GetMapping("{id}")
+    public ResponseEntity get(@PathVariable Integer id) {
+        Member member = service.getByID(id);
+        if (member == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok().body(member);
+        }
+    }
 }
