@@ -70,11 +70,12 @@ public class MemberController {
 
     @PostMapping("modify")
     public ResponseEntity modify(@RequestBody Member member) {
-//        if(service.hasAccessModify(member)){
-//            service.modify(member);
-//            return ResponseEntity.ok().build();
-//        }
-        return null;
+        if (service.hasAccessModify(member)) {
+            service.modify(member);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
     @PostMapping("token")

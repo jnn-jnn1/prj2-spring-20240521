@@ -115,4 +115,9 @@ public class MemberService {
         }
         return result;
     }
+
+    public boolean hasAccessModify(Member member) {
+        Member dbMember = mapper.selectById(member.getId());
+        return true;
+    }
 }
