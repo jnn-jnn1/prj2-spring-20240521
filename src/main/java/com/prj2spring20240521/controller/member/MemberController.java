@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -65,5 +66,25 @@ public class MemberController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    @PostMapping("modify")
+    public ResponseEntity modify(@RequestBody Member member) {
+//        if(service.hasAccessModify(member)){
+//            service.modify(member);
+//            return ResponseEntity.ok().build();
+//        }
+        return null;
+    }
+
+    @PostMapping("token")
+    public ResponseEntity token(@RequestBody Member member) {
+        Map<String, Object> map = service.getToken(member);
+
+        if (map == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        return ResponseEntity.ok(map);
     }
 }
