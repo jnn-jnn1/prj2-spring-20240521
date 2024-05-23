@@ -68,7 +68,7 @@ public class MemberController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
 
-    @PostMapping("modify")
+    @PutMapping("modify")
     public ResponseEntity modify(@RequestBody Member member) {
         if (service.hasAccessModify(member)) {
             service.modify(member);
