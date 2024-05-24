@@ -40,3 +40,14 @@ WHERE id > 0;
 ALTER TABLE board
     MODIFY COLUMN member_id INT NOT NULL;
 DESC board;
+
+SELECT *
+FROM board
+ORDER BY id DESC;
+
+SELECT *
+FROM member;
+
+SELECT *
+FROM member
+WHERE id = 14;

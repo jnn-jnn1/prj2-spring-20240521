@@ -1,7 +1,9 @@
 package com.prj2spring20240521.controller.board;
 
 import com.prj2spring20240521.domain.board.Board;
+import com.prj2spring20240521.domain.member.Member;
 import com.prj2spring20240521.service.board.BoardService;
+import com.prj2spring20240521.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +18,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardService service;
+    private final MemberService memberService;
 
     @PostMapping("add")
     @PreAuthorize("isAuthenticated()")
@@ -45,8 +48,12 @@ public class BoardController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Integer id) {
-        service.remove(id);
+    public ResponseEntity delete(@RequestBody Member member, Authentication authentication) {
+        if (memberService.hasAccess(member, authentication)) {
+            service.remove(member.getId());
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping("edit")
