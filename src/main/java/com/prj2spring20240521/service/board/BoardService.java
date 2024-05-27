@@ -8,7 +8,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
@@ -34,9 +35,34 @@ public class BoardService {
         return true;
     }
 
-    public List<Board> list(Integer page) {
+    public Map<String, Object> list(Integer page) {
+        Map pageInfo = new HashMap();
         Integer offset = (page - 1) * 10;
-        return mapper.selectAllPaging(offset);
+        Integer countAll = mapper.countAll();
+        Integer lastPageNumber = (countAll - 1) / 10 + 1;
+
+        Integer leftPageNumber = (page - 1) / 10 * 10 + 1;
+        Integer rightPageNumber = leftPageNumber + 9;
+        Integer prevPageNumber = leftPageNumber - 1;
+        Integer nextPageNumber = rightPageNumber + 1;
+
+        rightPageNumber = Math.min(rightPageNumber, lastPageNumber);
+
+        leftPageNumber = rightPageNumber - 9;
+        leftPageNumber = Math.max(leftPageNumber, 1);
+
+        if (prevPageNumber > 0) {
+            pageInfo.put("prevPageNumber", prevPageNumber);
+        }
+        if (nextPageNumber <= lastPageNumber) {
+            pageInfo.put("nextPageNumber", nextPageNumber);
+        }
+
+        pageInfo.put("currentPageNumber", page);
+        pageInfo.put("lastPageNumber", lastPageNumber);
+        pageInfo.put("leftPageNumber", leftPageNumber);
+        pageInfo.put("rightPageNumber", rightPageNumber);
+        return Map.of("pageInfo", pageInfo, "boardList", mapper.selectAllPaging(offset));
     }
 
     public Board get(Integer id) {
