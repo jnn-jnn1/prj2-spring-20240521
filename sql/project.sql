@@ -66,3 +66,22 @@ INSERT INTO board
     (title, content, member_id)
 SELECT title, content, member_id
 FROM board;
+
+SELECT *
+FROM member;
+
+UPDATE member
+SET nick_name = 'eeee'
+WHERE id = 14;
+
+UPDATE member
+SET nick_name = 'aaaa'
+WHERE id = 9;
+
+UPDATE board
+SET member_id = 14
+WHERE id % 2 = 0;
+
+UPDATE board
+SET member_id = 9
+WHERE id % 2 = 1;
