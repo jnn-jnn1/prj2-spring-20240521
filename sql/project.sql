@@ -61,3 +61,8 @@ CREATE TABLE authority
 
 INSERT INTO authority (member_id, name)
 VALUES (13, 'admin');
+
+INSERT INTO board
+    (title, content, member_id)
+SELECT title, content, member_id
+FROM board;
