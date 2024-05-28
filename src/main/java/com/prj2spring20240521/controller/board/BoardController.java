@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -63,13 +64,14 @@ public class BoardController {
 
     @PutMapping("edit")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity edit(@RequestBody Board board, Authentication authentication) {
+    public ResponseEntity edit(Board board, Authentication authentication, @RequestParam(value = "removeFileList[]", required = false) List<String> removeFileList) {
+
         if (!service.hasAccess(board.getId(), authentication)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         if (service.validate(board)) {
-            service.edit(board);
+            service.edit(board, removeFileList);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.badRequest().build();
