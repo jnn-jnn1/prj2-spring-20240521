@@ -85,3 +85,13 @@ WHERE id % 2 = 0;
 UPDATE board
 SET member_id = 9
 WHERE id % 2 = 1;
+
+CREATE TABLE board_file
+(
+    board_id INT          NOT NULL REFERENCES board (id),
+    name     VARCHAR(500) NOT NULL,
+    PRIMARY KEY (board_id, name)
+);
+
+SELECT *
+FROM board_file;

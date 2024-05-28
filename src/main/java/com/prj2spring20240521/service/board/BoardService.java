@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,9 +19,17 @@ public class BoardService {
     private final BoardMapper mapper;
     private final MemberMapper memberMapper;
 
-    public void add(Board board, Authentication authentication) {
+    public void add(Board board, MultipartFile[] files, Authentication authentication) {
         board.setMemberId(Integer.valueOf(authentication.getName()));
+
         mapper.insert(board);
+        
+        if (files != null) {
+            for (MultipartFile file : files) {
+                mapper.insertFileName(board.getId(), file.getOriginalFilename());
+            }
+        }
+
     }
 
     public boolean validate(Board board) {
@@ -39,7 +48,7 @@ public class BoardService {
 
         Map pageInfo = new HashMap();
         Integer offset = (page - 1) * 10;
-        Integer countAll = mapper.countAll();
+        Integer countAll = mapper.countAllWithSearch(searchType, keyword);
         Integer lastPageNumber = (countAll - 1) / 10 + 1;
 
         Integer leftPageNumber = (page - 1) / 10 * 10 + 1;
