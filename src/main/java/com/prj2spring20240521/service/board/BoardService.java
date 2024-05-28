@@ -132,7 +132,7 @@ public class BoardService {
         if (removeFileList != null && removeFileList.size() > 0) {
             for (String fileName : removeFileList) {
                 // disk의 파일 삭제
-                String path = STR.":C/Temp/prj2/\{board.getId()}/\{fileName}";
+                String path = STR."C:/Temp/prj2/\{board.getId()}/\{fileName}";
                 File file = new File(path);
                 file.delete();
 
