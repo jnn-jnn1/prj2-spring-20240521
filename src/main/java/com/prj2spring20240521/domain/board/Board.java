@@ -3,6 +3,7 @@ package com.prj2spring20240521.domain.board;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class Board {
@@ -13,4 +14,5 @@ public class Board {
     private Integer memberId;
     private LocalDateTime inserted;
     private Integer numberOfImages;
+    private List<String> imageSrcList;
 }
