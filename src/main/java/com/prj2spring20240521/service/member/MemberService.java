@@ -1,8 +1,10 @@
 package com.prj2spring20240521.service.member;
 
+import com.prj2spring20240521.domain.board.Board;
 import com.prj2spring20240521.domain.member.Member;
 import com.prj2spring20240521.mapper.board.BoardMapper;
 import com.prj2spring20240521.mapper.member.MemberMapper;
+import com.prj2spring20240521.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +29,7 @@ public class MemberService {
     final BCryptPasswordEncoder passwordEncoder;
     final JwtEncoder jwtEncoder;
     final BoardMapper boardMapper;
+    final BoardService boardService;
 
     public void add(Member member) {
         member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -69,8 +72,13 @@ public class MemberService {
     }
 
     public void remove(Integer id) {
-        // board 테이블 작성글 지우기
-        boardMapper.deleteByMemberId(id);
+        // 회원이 쓴 게시물 조회
+        List<Board> boardList = boardMapper.selectByMemberId(id);
+
+        boardList.forEach(board -> boardService.remove(board.getId()));
+
+        // 각 게시물 지우기
+
         // 회원 지우기
         mapper.deleteById(id);
     }
