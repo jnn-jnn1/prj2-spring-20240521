@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 
 @RestController
@@ -25,7 +26,7 @@ public class BoardController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity add(
             Authentication authentication,
-            Board board, @RequestParam(value = "files[]", required = false) MultipartFile[] files) {
+            Board board, @RequestParam(value = "files[]", required = false) MultipartFile[] files) throws IOException {
 
         if (service.validate(board)) {
             service.add(board, files, authentication);
