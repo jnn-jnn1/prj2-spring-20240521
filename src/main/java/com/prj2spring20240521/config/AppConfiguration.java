@@ -38,7 +38,7 @@ public class AppConfiguration {
 
     @Value("${aws.access.key}")
     String accessKey;
-    @Value("{aws.secret.key}")
+    @Value("${aws.secret.key}")
     String secretKey;
 
     @Bean
