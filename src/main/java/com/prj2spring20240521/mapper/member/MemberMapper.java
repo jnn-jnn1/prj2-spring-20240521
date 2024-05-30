@@ -62,4 +62,10 @@ public interface MemberMapper {
                 WHERE member_id = #{memberId}
             """)
     List<String> selectAuthorityByMemberId(Integer memberId);
+
+    @Delete("""
+                DELETE FROM board_like
+                WHERE member_id = #{memberId}
+            """)
+    int deleteLikeByMemberId(Integer memberId);
 }

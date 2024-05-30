@@ -75,9 +75,11 @@ public class MemberService {
         // 회원이 쓴 게시물 조회
         List<Board> boardList = boardMapper.selectByMemberId(id);
 
+        // 각 게시물 지우기
         boardList.forEach(board -> boardService.remove(board.getId()));
 
-        // 각 게시물 지우기
+        // 좋아요 지우기
+        mapper.deleteLikeByMemberId(id);
 
         // 회원 지우기
         mapper.deleteById(id);
