@@ -104,7 +104,9 @@ public class BoardService {
         return Map.of("pageInfo", pageInfo, "boardList", mapper.selectAllPaging(offset, searchType, keyword));
     }
 
-    public Board get(Integer id) {
+    public Map<String, Object> get(Integer id, Authentication authentication) {
+        Map<String, Object> result = new HashMap<>();
+
         Board board = mapper.selectById(id);
         List<String> fileNames = mapper.selectFileNameByBoardId(id);
 
@@ -116,7 +118,19 @@ public class BoardService {
 
         board.setFileList(files);
 
-        return board;
+        Map<String, Object> like = new HashMap<>();
+
+        if (authentication == null) {
+            like.put("like", false);
+        } else {
+            int c = mapper.selectLikeByBoardIdAndMemberId(id, authentication.getName());
+            like.put("like", c == 1);
+        }
+        like.put("count", mapper.selectCountLikeByBoardId(id));
+        result.put("board", board);
+        result.put("like", like);
+
+        return result;
     }
 
     public void remove(Integer id) {
@@ -133,6 +147,9 @@ public class BoardService {
 
             s3Client.deleteObject(objectRequest);
         }
+
+        // board_like
+        mapper.deleteLikeByBoardId(id);
 
         // board_file
         mapper.deleteFileByBoardId(id);
@@ -202,7 +219,7 @@ public class BoardService {
             mapper.insertLikeByBoardIdAndMemberId(boardId, memberId);
             result.put("like", true);
         }
-        
+
         result.put("count", mapper.selectCountLikeByBoardId(boardId));
 
         return result;
