@@ -31,4 +31,10 @@ public class CommentController {
     public List<Comment> list(@PathVariable Integer boardId) {
         return service.list(boardId);
     }
+
+    @DeleteMapping("remove")
+    public void remove(@RequestBody Comment comment) {
+        System.out.println("comment = " + comment);
+        service.remove(comment);
+    }
 }
