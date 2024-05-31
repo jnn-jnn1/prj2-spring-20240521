@@ -41,4 +41,9 @@ public class CommentController {
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }
+
+    @PutMapping("edit")
+    public void edit(@RequestBody Comment comment) {
+        service.modify(comment);
+    }
 }
