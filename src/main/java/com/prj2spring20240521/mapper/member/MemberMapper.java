@@ -68,4 +68,5 @@ public interface MemberMapper {
                 WHERE member_id = #{memberId}
             """)
     int deleteLikeByMemberId(Integer memberId);
+
 }
