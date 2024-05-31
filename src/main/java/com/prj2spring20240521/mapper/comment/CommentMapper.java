@@ -18,7 +18,7 @@ public interface CommentMapper {
     int insert(Comment comment);
 
     @Select("""
-                SELECT c.id, c.comment, c.inserted, m.nick_name
+                SELECT c.id, c.comment, c.inserted, m.nick_name, m.id memberId
                 FROM comment c JOIN member m ON c.member_id = m.id
                 WHERE board_id = #{boardId}
             """)
@@ -31,4 +31,11 @@ public interface CommentMapper {
                     """
     )
     int deleteById(Integer id);
+
+    @Select("""
+                SELECT *
+                FROM comment
+                WHERE id = #{id}
+            """)
+    Comment selectById(Integer id);
 }
